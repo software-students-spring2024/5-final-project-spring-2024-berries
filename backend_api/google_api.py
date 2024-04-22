@@ -20,14 +20,13 @@ try:
     DB_USER = os.getenv("MONGODB_USER")
     DB_PASSWORD = os.getenv("MONGO_PWD")
     DB_HOST = os.getenv("DB_HOST")
-    URI=f"mongodb+srv://{DB_USER}:{DB_PASSWORD}@{DB_HOST}.5kr79yv.mongodb.net/"
+    URI = f"mongodb+srv://{DB_USER}:{DB_PASSWORD}@{DB_HOST}.5kr79yv.mongodb.net/"
     client = MongoClient(URI)
-    db = client['cafes']
-    gestureDB = db['cafes']
+    db = client["cafes"]
+    cafesCollection = db["cafes"]
     print("Connected!")
 except Exception as e:
     print(e)
-
 
 
 api_key = os.environ.get("GOOGLE_API_KEY")
@@ -40,9 +39,9 @@ def find_cafes():
     latitude = data["latitude"]
     longitude = data["longitude"]
 
-    #google_api_key = "AIzaSyC4jaf9Xb9_yFj-wl_hLJjL3CxXhGN1WfY"  # google api
+    # google_api_key = "AIzaSyC4jaf9Xb9_yFj-wl_hLJjL3CxXhGN1WfY"  # google api
     places_url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={latitude},{longitude}&radius=1000&type=cafe&key={api_key}"
-    response = requests.get(places_url)
+    response = requests.get(places_url, timeout=15)
     results = response.json().get("results", [])
 
     # cafe data -> mongo db

@@ -21,13 +21,12 @@ try:
     DB_USER = os.getenv("MONGODB_USER")
     DB_PASSWORD = os.getenv("MONGO_PWD")
     DB_HOST = os.getenv("DB_HOST")
-    URI=f"mongodb+srv://{DB_USER}:{DB_PASSWORD}@{DB_HOST}.5kr79yv.mongodb.net/"
+    URI = f"mongodb+srv://{DB_USER}:{DB_PASSWORD}@{DB_HOST}.5kr79yv.mongodb.net/"
     client = MongoClient(URI)
-    db = client['cafes']
-    gestureDB = db['cafes']
+    db = client["cafes"]
+    gestureDB = db["cafes"]
 except Exception as e:
     print(e)
-
 
 
 try:
