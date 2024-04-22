@@ -94,7 +94,6 @@ def find_coffee_shops():
             )
 
         return jsonify({"coffee_shops": coffee_shops})
-    
     return (
         jsonify({"error": "Failed to fetch coffee shops from Google Places API."}),
         500,

@@ -6,3 +6,4 @@ disable =
     C0301,  # line-too-long
     C0114,  # module string
     R1721,  # list()
+    W0718,  # too broad general exception

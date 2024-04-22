@@ -1,4 +1,4 @@
-name: CI for Machine Learning Client
+name: CI for Backend
 
 on:
   push:
@@ -26,8 +26,8 @@ jobs:
         pip install pytest
         pip install pylint black
     - name: Run Pylint
-      run: pylint machine_learning_client/app.py --ignore-patterns='.*\.pb2\.py,.*\.pb2_grpc\.py'
+      run: pylint backend_api/ --ignore-patterns='.*\.pb2\.py,.*\.pb2_grpc\.py'
     - name: Run Black (Check mode)
-      run: black --check machine_learning_client/
+      run: black --check backend_api/
     #- name: Run tests
     #  run: pytest tests/ml_app_tests.py
