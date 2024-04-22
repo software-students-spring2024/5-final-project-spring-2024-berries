@@ -11,14 +11,16 @@ app = Flask(__name__)
 
 # app.config['MONGO_URI'] = os.getenv('MONGO_URI', 'mongodb://localhost:27017/coffee_shops')
 
-DB_USER = os.getenv("DB_USER")
-DB_PASSWORD = os.getenv("MONGODB_PW")
-DB_HOST = os.getenv("DB_HOST")
-uri = f"mongodb+srv://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/?retryWrites=true&w=majority&appName=Cluster0&tlsAllowInvalidCertificates=true"
-# uri = f"mongodb+srv://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/?retryWrites=true&w=majority&appName=coffeeShops"
-client = pymongo.MongoClient(uri)
-db = client.get_database("cafes")
-user_collection = db.get_collection("cafes")
+try:
+    uri = "mongodb://mongodb:27017/"
+    client = MongoClient(uri)
+    db = client["cafes"]
+    cafeDB = db["cafes"]
+    print("Connected!")
+
+except Exception as e:
+    print(e)
+
 
 
 try:

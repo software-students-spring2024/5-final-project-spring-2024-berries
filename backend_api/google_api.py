@@ -5,10 +5,18 @@ import os
 
 app = Flask(__name__)
 
-# set up mongo 
-mongo_client = MongoClient('mongodb+srv://bcdy:n7ZL4YrKcJac2SeT@cafes.cm5pzwe.mongodb.net/?retryWrites=true&w=majority&appName=cafes')
-db = mongo_client['cafes']  # db name
-cafesCollection = db['cafes']  # collection name
+
+try:
+    uri = "mongodb://mongodb:27017/"
+    client = MongoClient(uri)
+    db = client["cafes"]
+    cafesCollection = db['cafes']
+    print("Connected!")
+
+except Exception as e:
+    print(e)
+
+
 api_key = os.environ.get('GOOGLE_API_KEY')
 
 @app.route('/find_cafes', methods=['POST'])
@@ -43,4 +51,4 @@ def find_cafes():
     return jsonify(simplified_results)
 
 if __name__ == '_main_':
-    app.run(debug=True, port=5001)
+    app.run(debug=True, port=5002)

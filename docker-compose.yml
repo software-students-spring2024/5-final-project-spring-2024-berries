@@ -1,0 +1,28 @@
+version: '3'
+services:
+  web_app:
+    build: 
+      context: ./web_app
+      dockerfile: ./Dockerfile
+    ports:
+      - "5001:5001"
+    depends_on:
+      - mongodb
+    environment:
+      FLASK_APP: web_app/app.py
+
+  machine_learning_client:
+    build:
+      context: ./backend_api
+      dockerfile: ./Dockerfile
+    ports:
+      - "5002:5002"
+    depends_on:
+      - mongodb
+    environment:
+      FLASK_APP: backend_api/google_api.py
+
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
