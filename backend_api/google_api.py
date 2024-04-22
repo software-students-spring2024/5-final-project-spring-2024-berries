@@ -1,12 +1,12 @@
+import os
 from flask import Flask, request, jsonify
 import requests
 from pymongo import MongoClient
-import os
 
 app = Flask(__name__)
 
 
-try:
+"""try:
     uri = "mongodb://mongodb:27017/"
     client = MongoClient(uri)
     db = client["cafes"]
@@ -14,7 +14,20 @@ try:
     print("Connected!")
 
 except Exception as e:
+    print(e)"""
+
+try:
+    DB_USER = os.getenv("MONGODB_USER")
+    DB_PASSWORD = os.getenv("MONGO_PWD")
+    DB_HOST = os.getenv("DB_HOST")
+    URI=f"mongodb+srv://{DB_USER}:{DB_PASSWORD}@{DB_HOST}.5kr79yv.mongodb.net/"
+    client = MongoClient(URI)
+    db = client['cafes']
+    gestureDB = db['cafes']
+    print("Connected!")
+except Exception as e:
     print(e)
+
 
 
 api_key = os.environ.get("GOOGLE_API_KEY")
@@ -22,11 +35,12 @@ api_key = os.environ.get("GOOGLE_API_KEY")
 
 @app.route("/find_cafes", methods=["POST"])
 def find_cafes():
+    """Get cafe information from Google Places API"""
     data = request.get_json()
     latitude = data["latitude"]
     longitude = data["longitude"]
 
-    google_api_key = "AIzaSyC4jaf9Xb9_yFj-wl_hLJjL3CxXhGN1WfY"  # google api
+    #google_api_key = "AIzaSyC4jaf9Xb9_yFj-wl_hLJjL3CxXhGN1WfY"  # google api
     places_url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={latitude},{longitude}&radius=1000&type=cafe&key={api_key}"
     response = requests.get(places_url)
     results = response.json().get("results", [])
