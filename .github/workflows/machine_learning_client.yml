@@ -1,0 +1,33 @@
+name: CI for Backend
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+   types: [opened, closed]
+   branches: [main, master]
+
+permissions:
+  contents: read
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r backend_api/requirements.txt
+        pip install pytest
+        pip install pylint black
+    - name: Run Pylint
+      run: pylint backend_api/ --ignore-patterns='.*\.pb2\.py,.*\.pb2_grpc\.py'
+    - name: Run Black (Check mode)
+      run: black --check backend_api/
+    #- name: Run tests
+    #  run: pytest tests/ml_app_tests.py

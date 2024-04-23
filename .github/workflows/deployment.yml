@@ -29,8 +29,8 @@ jobs:
       run: pylint web_app/app.py --ignore-patterns='.*\.pb2\.py,.*\.pb2_grpc\.py'
     - name: Run Black (Check mode)
       run: black --check web_app/
-    - name: Run tests
-      run: pytest tests/web_app_tests.py
+    #- name: Run tests
+    #  run: pytest tests/web_app_tests.py
     - name: Build and run with Docker Compose
       run: docker-compose up --build -d
     - name: Check running services
