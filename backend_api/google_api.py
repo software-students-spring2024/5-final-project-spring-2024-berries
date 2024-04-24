@@ -28,7 +28,6 @@ try:
 except Exception as e:
     print(e)
 
-
 api_key = os.environ.get("GOOGLE_API_KEY")
 
 
