@@ -26,7 +26,7 @@ try:
     db = client["cafes"]
     gestureDB = db["cafes"]
 except Exception as e:
-    print(e)
+    print(e+ "THIS IS WHERE THE EORROR IS ")
 
 
 try:
