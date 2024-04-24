@@ -1,3 +1,7 @@
+![backend](https://github.com/nyu-software-engineering/containerized-app-exercise/actions/workflows/backend.yml/badge.svg)
+![deployment](https://github.com/nyu-software-engineering/containerized-app-exercise/actions/workflows/deployment.yml/badge.svg)
+![event-logger](https://github.com/nyu-software-engineering/containerized-app-exercise/actions/workflows/event-logger.yml/badge.svg)
+
 # Final Project
 
 An exercise to put to practice software development teamwork, subsystem communication, containers, deployment, and CI/CD pipelines. See [instructions](./instructions.md) for details.
