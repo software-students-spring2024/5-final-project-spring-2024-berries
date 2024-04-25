@@ -22,47 +22,72 @@ try:
     DB_HOST = os.getenv("DB_HOST")
     URI = f"mongodb+srv://{DB_USER}:{DB_PASSWORD}@{DB_HOST}.5kr79yv.mongodb.net/"
     client = MongoClient(URI)
-    db = client["cafes"]
-    cafesCollection = db["cafes"]
+    db = client["coffeedb"]
+    cafesCollection = db["coffee"]
     print("Connected!")
 except Exception as e:
     print(e)
 
-api_key = os.environ.get("GOOGLE_API_KEY")
+#api_key = os.environ.get("GOOGLE_API_KEY")
+
 
 
 @app.route("/find_cafes", methods=["POST"])
 def find_cafes():
-    """Get cafe information from Google Places API"""
     data = request.get_json()
     latitude = data["latitude"]
     longitude = data["longitude"]
+    
 
-    # google_api_key = "AIzaSyC4jaf9Xb9_yFj-wl_hLJjL3CxXhGN1WfY"  # google api
-    places_url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={latitude},{longitude}&radius=1000&type=cafe&key={api_key}"
-    response = requests.get(places_url, timeout=15)
-    results = response.json().get("results", [])
+    #print("GOT RESUKTS!!!!")
+    
+    
+    # api key and parameters for google places
+    #api_key = os.getenv('GOOGLE_API_KEY')
+    api_key = "AIzaSyC4jaf9Xb9_yFj-wl_hLJjL3CxXhGN1WfY"
+    radius = 400  # ADJUSTABLE
+    types = "cafe"  # search only cafes
+    
+    '''
+    # if we want cafes with wifi
+    keyword = "wifi"
+    url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={latitude},{longitude}&radius={radius}&type={types}&keyword={keyword}&key={api_key}"
+    '''
+    # google api request
+    url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={latitude},{longitude}&radius={radius}&type={types}&key={api_key}"
+    response = requests.get(url, timeout=15)
 
-    # cafe data -> mongo db
-    # pull stats from json
-    # insert into collection
-    for cafe in results:
-        cafe_data = {
-            "name": cafe.get("name"),
-            "location": cafe["geometry"]["location"],
-            "vicinity": cafe.get("vicinity"),
-            "rating": cafe.get("rating"),
-            "user_ratings_total": cafe.get("user_ratings_total"),
-        }
-        cafesCollection.insert_one(cafe_data)
+    if response.status_code == 200:
+        # get info from api
+        coffee_shops = []
+        for place in response.json().get("results", []):
+            # get a photo of coffeeshop
+            photo_reference = (
+                place["photos"][0]["photo_reference"]
+                if "photos" in place and len(place["photos"]) > 0
+                else None
+            )
 
-    # basic info - name and location of cafe
-    simplified_results = [
-        {"name": cafe.get("name"), "address": cafe.get("vicinity")} for cafe in results
-    ]
+            coffee_shops.append(
+                {
+                    "name": place["name"],
+                    "vicinity": place.get(
+                        "vicinity"
+                    ),  # vicinity = address in google places
+                    "rating": place.get("rating"),
+                    "photo_reference": photo_reference,
+                }
+            )
 
-    return jsonify(simplified_results)
+        return jsonify({"coffee_shops": coffee_shops})
+    return (
+        jsonify({"error": "Failed to fetch coffee shops from Google Places API."}),
+        500,
+    )
+    
 
 
-if __name__ == "_main_":
-    app.run(debug=True, port=5002)
+
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5002)

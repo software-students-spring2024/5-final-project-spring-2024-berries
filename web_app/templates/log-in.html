@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device.width, initial-scale=1.0">
+    <title>log in</title>
+    <style>
+        * {
+                margin: 1;
+                padding: 0;
+            }
+            body {
+                background-color: #f6BDC2;
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+            }
+            div{
+                width: 300px;
+                display: grid;
+            }
+            .login-header {
+                padding: 10px;
+                height: 50px;
+                color : #e41e29;
+                align-items: center;
+                text-align: center;
+                display: block;
+            }
+            p{
+                font-size: 14px;
+            }
+            .submit-button{
+                text-align: center;
+                font-size: 15px;
+                background-color:#e41e29;
+                color: white;
+                font-weight: bold;
+                padding: 5px;
+                border-color: white;
+                display: block;
+            }
+            .centered-form{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100vw; 
+                flex-direction: column;
+            }
+    </style>
+  </head>
+
+  <body>
+    <div class="edit-header">
+        <h2 class="login-header">Java Junction</h2>
+        <p style="font-size: 12px; margin-bottom: 30px;"font> sign in below </p>
+        {% if message %}
+          <p style="color: red; font-weight: 600; margin-bottom: 20%;"> {{ message }} </p>
+        {% endif %}
+    </div>
+
+    <form method="POST" action="{{ url_for('login') }}">
+    <div class="centered-form">   
+      <input class="login-input" type="text" placeholder="enter username" name="username" required>  
+      <br> 
+      <input class="login-input" type="password" placeholder="enter password" name="password" required>  
+      <br>
+      <button class="submit-button" type="submit">sign in</button>   
+      <a href="{{ url_for('register')}}">click here to register</a> 
+  </div>   
+</form>  
+  </body>
+</html>
