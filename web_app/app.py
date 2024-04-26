@@ -19,8 +19,8 @@ try:
     # check if connected correctly
     # print(URI)
     #print("Connected!")
-except Exception as e:
-    print(e)
+except Exception as error:
+    print(error)
 
 
 try:
