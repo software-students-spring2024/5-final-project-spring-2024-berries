@@ -42,11 +42,6 @@ def find_cafes():
     radius = 400  # ADJUSTABLE
     types = "cafe"  # search only cafes
 
-    '''
-    # if we want cafes with wifi
-    keyword = "wifi"
-    url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={latitude},{longitude}&radius={radius}&type={types}&keyword={keyword}&key={api_key}"
-    '''
     # google api request
     url = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={latitude},{longitude}&radius={radius}&type={types}&key={api_key}"
     response = requests.get(url, timeout=15)

@@ -7,3 +7,4 @@ disable =
     C0114,  # module string
     R1721,  # list()
     W0718,  # too broad general exception
+    E1101,  # Module 'bcrypt' has no 'hashpw' member (no-member)

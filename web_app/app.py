@@ -60,7 +60,7 @@ def register():
         message = 'That username already exists!'
         return render_template('sign-up.html', message=message)
 
-    return render_template('sign-up.html', message=message) 
+    return render_template('sign-up.html', message=message)
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -78,12 +78,12 @@ def login():
             if bcrypt.checkpw(request.form['password'].encode('utf-8'), login_user['password']):
                 session['username'] = request.form['username']
                 return redirect(url_for('home'))
-        else: 
+        else:
             message = 'User not found! Please register first.'
             # return redirect(url_for('log-in'))
             return render_template('log-in.html', message=message)
 
-        message = 'Wrong username or password. Please try again.'    
+        message = 'Wrong username or password. Please try again.'
         return render_template('log-in.html', message=message)
         # return redirect(url_for('login'))
 
@@ -139,7 +139,7 @@ def find_coffee_shops():
         api_response = requests.post(api_url, json={"latitude": latitude, "longitude": longitude}, timeout=10)
         api_response.raise_for_status()
     except requests.exceptions.RequestException as e:
-        return jsonify({"error": "Error occurred while contacting backend API"}), 500
+        return jsonify({"error": f"Failed to fetch coffee shops from Google Places API: {e}"}), 500
 
     return jsonify(api_response.json())
 
