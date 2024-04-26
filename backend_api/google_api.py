@@ -6,16 +6,6 @@ from pymongo import MongoClient
 app = Flask(__name__)
 
 
-"""try:
-    uri = "mongodb://mongodb:27017/"
-    client = MongoClient(uri)
-    db = client["cafes"]
-    cafesCollection = db["cafes"]
-    print("Connected!")
-
-except Exception as e:
-    print(e)"""
-
 try:
     DB_USER = os.getenv("MONGODB_USER")
     DB_PASSWORD = os.getenv("MONGO_PWD")
@@ -24,30 +14,34 @@ try:
     client = MongoClient(URI)
     db = client["coffeedb"]
     cafesCollection = db["coffee"]
-    print("Connected!")
+    #print("Connected!")
 except Exception as e:
     print(e)
 
 #api_key = os.environ.get("GOOGLE_API_KEY")
 
 
-
 @app.route("/find_cafes", methods=["POST"])
 def find_cafes():
+    """
+    Finds cafes based on latitude and longitude.
+
+    Expects JSON data with keys 'latitude' and 'longitude'.
+    Returns JSON response with a list of cafes found.
+
+    Returns:
+        JSON: A list of cafes found near the given latitude and longitude.
+    """
     data = request.get_json()
     latitude = data["latitude"]
     longitude = data["longitude"]
-    
 
-    #print("GOT RESUKTS!!!!")
-    
-    
     # api key and parameters for google places
     #api_key = os.getenv('GOOGLE_API_KEY')
     api_key = "AIzaSyC4jaf9Xb9_yFj-wl_hLJjL3CxXhGN1WfY"
     radius = 400  # ADJUSTABLE
     types = "cafe"  # search only cafes
-    
+
     '''
     # if we want cafes with wifi
     keyword = "wifi"
@@ -84,8 +78,6 @@ def find_cafes():
         jsonify({"error": "Failed to fetch coffee shops from Google Places API."}),
         500,
     )
-    
-
 
 
 

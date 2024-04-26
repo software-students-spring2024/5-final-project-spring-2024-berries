@@ -9,38 +9,20 @@ load_dotenv()
 
 app = Flask(__name__)
 
-#----- NEEDS TO CHANGE SECRET KEY -----#
 app.secret_key = "323qssssa"
 
-# app.config['MONGO_URI'] = os.getenv('MONGO_URI', 'mongodb://localhost:27017/coffee_shops')
-"""
-uri = "mongodb://mongodb:27017/"
-    client = MongoClient(uri)
-    db = client["cafes"]
-    cafeDB = db["cafes"]
-    print("Connected!")
-"""
-
 try:
-    '''
-    DB_USER = os.getenv("MONGODB_USER")
-    DB_PASSWORD = os.getenv("MONGO_PWD")
-    DB_HOST = os.getenv("DB_HOST")
-    URI = f"mongodb+srv://{DB_USER}:{DB_PASSWORD}@{DB_HOST}.5kr79yv.mongodb.net/"
-    '''
     URI = "mongodb+srv://bcdy:BPoOlpuLgv3WKJ62@coffeeshops.5kr79yv.mongodb.net/"
     client = MongoClient(URI)
     db = client["coffeedb"]
-    #cafesCollection = db["coffee"]
     user_collection = db["users"]
-    
     # check if connected correctly
-    print(URI)
-    print("Connected!")
+    # print(URI)
+    #print("Connected!")
 except Exception as e:
     print(e)
 
-'''
+
 try:
     # verify the connection works by pinging the database
     client.admin.command("ping")  # The ping command is cheap and does not require auth.
@@ -48,11 +30,16 @@ try:
 except Exception as e:
     # the ping command failed, so the connection is not available.
     print(" * ERRORRR", e)  # debug
-'''
 
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
+    """
+    Registers a new user by adding the user's name, username, and password to the database.
+
+    Returns:
+        HTML: The sign-up page if the user is not logged in, else the home page.
+    """
     message = None
     if request.method == 'POST':
         new_name = request.form['name']
@@ -62,7 +49,7 @@ def register():
         existing_user = user_collection.find_one({'username': new_username})
         #existing_user = user_collection.find({})
         #print(existing_user)
-        
+
         if existing_user is None:
             #hashpass = bcrypt.hashpw(new_password, bcrypt.gensalt())
             hashpass = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
@@ -70,21 +57,23 @@ def register():
             session['username'] = new_username
             return redirect(url_for('home'))
 
-        
         message = 'That username already exists!'
         return render_template('sign-up.html', message=message)
-    
+
     return render_template('sign-up.html', message=message) 
 
 
-
-# user login check
 @app.route('/', methods=['POST', 'GET'])
 def login():
+    """
+    Logs in the user by checking the username and password in the database.
+
+    Returns:
+        HTML: The login page if the user is not logged in, else the home page.
+    """
     message = None
     if request.method == 'POST':
         login_user = user_collection.find_one({'username': request.form['username']})
-        
         if login_user:
             if bcrypt.checkpw(request.form['password'].encode('utf-8'), login_user['password']):
                 session['username'] = request.form['username']
@@ -93,67 +82,68 @@ def login():
             message = 'User not found! Please register first.'
             # return redirect(url_for('log-in'))
             return render_template('log-in.html', message=message)
-        
+
         message = 'Wrong username or password. Please try again.'    
         return render_template('log-in.html', message=message)
-        # return redirect(url_for('login')) 
-    
-   #  return redirect(url_for('home'))
-    return render_template('log-in.html', message=message) 
+        # return redirect(url_for('login'))
+
+    # return redirect(url_for('home'))
+    return render_template('log-in.html', message=message)
 
 
-
-# user logout
 @app.route('/logout')
 def logout():
+    """
+    Logs out the user by removing the 'username' key from the session.
+
+    Returns:
+        Redirect: Redirects to the login page.
+    """
     session.pop('username', None)
     return redirect(url_for('login'))
 
 
-
 @app.route("/home")
 def home():
+    """
+    Renders the home page if the user is logged in, else redirects to the login page.
+
+    Returns:
+        HTML: The home page if the user is logged in, else the login page.     
+    """
     if 'username' not in session: # if user is not logged in
         return redirect(url_for('login'))
-    
+
     return render_template("index.html")
 
 
 @app.route("/find_coffee_shops", methods=["POST"])
 def find_coffee_shops():
+    """
+    Finds coffee shops near the specified latitude and longitude.
+
+    Expects JSON data with keys 'latitude' and 'longitude'.
+    Makes a request to an external service (method in backend_api) to find cafes based on the provided latitude and longitude.
+
+    Returns:
+        JSON: A list of coffee shops found near the specified latitude and longitude.
+
+    Raises:
+        HTTPError: If the request to the external service fails.
+    """
     data = request.get_json()
     latitude = data.get("latitude")
     longitude = data.get("longitude")
     api_url = "http://localhost:5002/find_cafes"  # URL to google_api.py service
-    api_response = requests.post(api_url, json={"latitude": latitude, "longitude": longitude})
-    if api_response.status_code == 200:
-        return jsonify(api_response.json())
-    else:
-        return jsonify({"error": "Backend API failed"}), 500
+    try:
+        api_response = requests.post(api_url, json={"latitude": latitude, "longitude": longitude}, timeout=10)
+        api_response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        return jsonify({"error": "Error occurred while contacting backend API"}), 500
+
+    return jsonify(api_response.json())
 
 
-
-
-'''
-#---------------------THIS IS NEVER USED!!!----------------------------#
-# show all results
-@app.route("/results", methods=["POST"])
-def show_results():
-    """Show all results."""
-    data = request.get_json()
-    latitute = data["latitude"]
-    longitude = data["longitude"]
-
-    coffee_shops = cafesCollection.find({"latitute": latitute, "longitude": longitude})
-
-    shop_list = [shop for shop in coffee_shops]
-    return render_template("results.html", coffee_shops=shop_list)
-'''
-
-
-# ---------------------------------------------------------------------------- #
-#                                     main                                     #
-# ---------------------------------------------------------------------------- #
 
 if __name__ == "__main__":
     FLASK_PORT = os.getenv("FLASK_PORT", "5001")
