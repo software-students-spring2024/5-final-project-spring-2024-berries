@@ -27,9 +27,9 @@ try:
     # verify the connection works by pinging the database
     client.admin.command("ping")  # The ping command is cheap and does not require auth.
     print(" *", "Connected to MongoDB!")  # if we get here, the connection worked!
-except Exception as e:
+except Exception as err:
     # the ping command failed, so the connection is not available.
-    print(" * ERRORRR", e)  # debug
+    print(" * ERRORRR", err)  # debug
 
 
 @app.route('/register', methods=['POST', 'GET'])
