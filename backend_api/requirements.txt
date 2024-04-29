@@ -1,4 +1,5 @@
 Flask==3.0.3
 pymongo==4.6.3
 Requests==2.31.0
+python-dotenv==1.0.1
 python_bcrypt==0.3.2
