@@ -1,6 +1,4 @@
 
-## place pytests here
-
 import pytest
 from web_app.app import app as flask_app  
 from unittest.mock import patch, MagicMock
@@ -23,7 +21,6 @@ def client(app):
 def runner(app):
     return app.test_cli_runner()
 
-# Mocking the database connection
 @pytest.fixture
 def mock_mongo_client(monkeypatch):
     class FakeMongoClient:
@@ -49,7 +46,6 @@ def mock_mongo_client(monkeypatch):
     monkeypatch.setattr(MongoClient, '__init__', FakeMongoClient.__init__)
     monkeypatch.setattr(MongoClient, '__getitem__', FakeMongoClient.__getitem__)
 
-# Tests for user registration
 def test_register_new_user(client, mocker):
     mocker.patch('bcrypt.hashpw', return_value=b'hashed_password')  
     response = client.post('/register', data={
@@ -58,7 +54,6 @@ def test_register_new_user(client, mocker):
         'password': 'securepassword'
     })
     assert response.status_code == 200  
-
 
 def test_register_existing_user(client, mocker):
     mocker.patch('pymongo.collection.Collection.find_one', return_value={'username': 'johndoe'})
@@ -69,8 +64,6 @@ def test_register_existing_user(client, mocker):
     })
     assert response.status_code == 200
 
-
-# Tests for user login
 def test_login_success(client, mocker):
     mocker.patch('bcrypt.checkpw', return_value=True)
     mocker.patch('pymongo.collection.Collection.find_one', return_value={'username': 'johndoe', 'password': 'hashed_password'})
@@ -82,7 +75,6 @@ def test_login_failure(client, mocker):
     response = client.post('/login', data={'username': 'wronguser', 'password': 'wrongpassword'})
     assert response.status_code == 404
 
-# Test for user logout
 def test_logout(client):
     with client:
         client.post('/login', data={'username': 'johndoe', 'password': 'securepassword'})
@@ -90,7 +82,6 @@ def test_logout(client):
         response = client.get('/home')
         assert response.status_code == 302 
 
-# Mock the external API call for finding coffee shops
 def test_find_coffee_shops(client):
     with patch('requests.post') as mock_post:
         mock_post.return_value.status_code = 200
@@ -99,29 +90,24 @@ def test_find_coffee_shops(client):
         assert response.status_code == 200
         assert "Best Coffee" in response.data.decode()
 
-
 def test_home_access_when_logged_in(client, mocker):
     with client.session_transaction() as sess:
         sess['username'] = 'johndoe'
     response = client.get('/home')
     assert response.status_code == 200
 
-# Test rendering of the login page
 def test_get_login_page(client):
     response = client.get('/')
     assert response.status_code == 200 
 
-# Test rendering of the registration page
 def test_get_register_page(client):
     response = client.get('/register')
     assert response.status_code == 200
 
-# Test rendering of the home page
 def test_get_home_page(client):
     response = client.get('/home')
     assert response.status_code == 302
 
-# Test rendering of the find coffee shops page
 def test_get_coffee_page(client):
     response = client.get('/find_coffee_shops')
     assert response.status_code == 405 
