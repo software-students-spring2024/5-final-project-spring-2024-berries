@@ -28,6 +28,6 @@ jobs:
     - name: Run Pylint
       run: pylint backend_api/ --ignore-patterns='.*\.pb2\.py,.*\.pb2_grpc\.py'
     - name: Run Black (Check mode)
-      run: black --check backend_api/
-    #- name: Run tests
-    #  run: pytest tests/ml_app_tests.py
+      run: black backend_api/
+    - name: Run tests
+      run: pytest tests/ml_app_tests.py

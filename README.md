@@ -45,6 +45,9 @@ On Windows:
 python -m pip install --upgrade pip
 pip install -r web_app/requirements.txt
 ```
+### 5. Run app:
+
+### 6. Build Docker Images:
 
 
 ## Contributors
