@@ -30,4 +30,4 @@ jobs:
     - name: Run Black (Check mode)
       run: black backend_api/
     - name: Run tests
-      run: pytest tests/ml_app_tests.py
+      run: pytest tests/web_app_tests.py
