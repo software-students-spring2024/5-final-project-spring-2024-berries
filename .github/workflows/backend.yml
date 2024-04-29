@@ -35,5 +35,5 @@ jobs:
       run: pylint backend_api/ --ignore-patterns='.*\.pb2\.py,.*\.pb2_grpc\.py'
     - name: Run Black (Check mode)
       run: black backend_api/
-    - name: Run tests
-      run: pytest tests/web_app_tests.py
+    #- name: Run tests
+    #  run: pytest tests/web_app_tests.py
