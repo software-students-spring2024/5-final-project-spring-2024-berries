@@ -116,6 +116,31 @@ def home():
 
     return render_template("index.html")
 
+@app.route('/get_comments', methods=['GET'])
+def get_comments():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
+    coffee_shop_id = request.args.get('coffee_shop_id')
+    user = user_collection.find_one({'username': session['username']})
+    comments = [c for c in user.get('comments', []) if c['coffee_shop_id'] == coffee_shop_id]
+    return jsonify({"comments": [c['comment'] for c in comments]})
+
+@app.route('/add_comment', methods=['POST'])
+def add_comment():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
+    user = user_collection.find_one({'username': session['username']})
+    comment_data = request.get_json()
+    coffee_shop_id = comment_data['coffee_shop_id']
+    comment = comment_data['comment']
+    # Append comment
+    user_collection.update_one(
+        {'_id': user['_id']},
+        {'$push': {'comments': {'coffee_shop_id': coffee_shop_id, 'comment': comment}}}
+    )
+    return jsonify({"status": "success"})
 
 @app.route("/find_coffee_shops", methods=["POST"])
 def find_coffee_shops():

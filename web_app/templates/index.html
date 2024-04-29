@@ -107,6 +107,10 @@
             width: 100%; /* images responsive */
         }
 
+        .shop-comments{
+            border: thin solid #ef5661;
+        }
+
 
   </style>
 </head>
@@ -122,6 +126,58 @@
         <div id="results"></div>
     </div>
     <script>
+        function submitComment(shopId) {
+            const commentText = document.getElementById(`comment-${shopId}`).value; // Get the comment text from textarea
+            if (!commentText) {
+                alert("Please enter a comment before submitting.");
+                return;
+            }
+
+            fetch('/add_comment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    coffee_shop_id: shopId,
+                    comment: commentText
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Network response was not ok.');
+            })
+            .then(data => {
+                console.log('Comment added:', data);
+                document.getElementById(`comment-${shopId}`).value = ''; 
+                fetchComments(shopId); 
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function fetchComments(shopId) {
+            fetch(`/get_comments?coffee_shop_id=${shopId}`)
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Network response was not ok.');
+            })
+            .then(data => {
+                const commentsDiv = document.getElementById(`comments-${shopId}`);
+                commentsDiv.innerHTML = ''; // Clear previous comments
+                data.comments.forEach(comment => {
+                    const commentNode = document.createElement('p');
+                    commentNode.textContent = comment; /
+                    commentsDiv.appendChild(commentNode);
+                });
+            })
+            .catch(error => console.error('Error fetching comments:', error));
+        }
+
         function getUserLocation() {
             if (navigator.geolocation) {
                 console.log('user location worked');
@@ -137,21 +193,26 @@
                     })
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data);
                         const resultsDiv = document.getElementById('results');
                         resultsDiv.innerHTML = ''; // Clear previous results
-                        
+
                         data.coffee_shops.forEach(shop => {
                             const shopDiv = document.createElement('div');
                             shopDiv.innerHTML = `
                                 <h3>${shop.name}</h3>
                                 <p>Address: ${shop.vicinity}</p>
-                                <p>Rating: ${shop.rating}\u2B50</p>
+                                <p>Rating: ${shop.rating}⭐</p>
                                 ${shop.photo_reference ? `<img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${shop.photo_reference}&key=AIzaSyC4jaf9Xb9_yFj-wl_hLJjL3CxXhGN1WfY" alt="${shop.name}">` : ''}
+                                <textarea id="comment-${shop.id}" placeholder="Add a private comment..."></textarea>
+                                <button onclick="submitComment('${shop.id}')">Submit Comment</button>
+                                <div style="border: none" id="comments-${shop.id}"></div>
                             `;
                             resultsDiv.appendChild(shopDiv);
+
+                            fetchComments(shop.id); // fetch and display
                         });
                     })
+
                     .catch(error => console.error('Error:', error));
                 });
             } else {
