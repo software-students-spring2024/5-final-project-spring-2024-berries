@@ -19,26 +19,33 @@
               display: grid;
           }
           .login-header {
-              padding: 10px;
-              height: 50px;
-              color : #e41e29;
-              align-items: center;
+                color : #e41e29;
+                font-size: 50px;
+                margin-bottom: 10px;
+            }
+            .edit-header{
+              width: 100%;    
+              display: block;  
+              margin: 0;        
+              padding: 0; 
               text-align: center;
-              display: block;
-          }
+              margin-top: 10%;
+            }
           p{
               font-size: 14px;
           }
           .submit-button{
-              text-align: center;
-              font-size: 15px;
-              background-color:#e41e29;
-              color: white;
-              font-weight: bold;
-              padding: 5px;
-              border-color: white;
-              display: block;
-          }
+                text-align: center;
+                font-size: 20px;
+                background-color:#e41e29;
+                color: white;
+                font-weight: bold;
+                padding: 10px;
+                border-color: white;
+                display: block;
+                border-radius: 30px;
+                margin-bottom: 5px;
+            }
           .centered-form{
               display: flex;
               justify-content: center;
@@ -46,13 +53,21 @@
               width: 100vw; 
               flex-direction: column;
           }
+          .login-input{
+              width: 400px;
+              height: 40px;
+              border-radius: 20px;
+              border: thin black solid;
+              font-size: 18px;
+              padding-left: 5px;
+            }
     </style>
   </head>
 
   <body>
     <div class="edit-header">
         <h2 class="login-header">Java Junction</h2>
-        <p style="font-size: 12px; margin-bottom: 30px;"> register below </p>
+        <p style="font-size: 25px; margin-bottom: 30px;"> register below </p>
         {% if message %}
         <p style="color: red; font-weight: 600; margin-bottom: 20%;"> {{ message }} </p>
         {% endif %}
