@@ -118,23 +118,3 @@ def test_login_incorrect_password(client, mocker):
     response = client.post('/', data={'username': 'johndoe', 'password': 'wrong_password'})
     assert response.status_code == 200 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
