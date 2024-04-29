@@ -48,6 +48,7 @@ def find_cafes():
 
             coffee_shops.append(
                 {
+                    "id": place['place_id'],
                     "name": place["name"],
                     "vicinity": place.get(
                         "vicinity"
