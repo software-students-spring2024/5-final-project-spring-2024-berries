@@ -74,6 +74,19 @@
             margin-bottom: 5px;
         }
 
+        button{
+            text-align: center;
+            font-size: 20px;
+            background-color:#e41e29;
+            color: white;
+            font-weight: bold;
+            padding: 10px;
+            border-color: white;
+            display: block;
+            border-radius: 30px;
+            margin-bottom: 5px;
+        }
+
         .centered-button{
             display: flex;
             justify-content: center;
@@ -109,6 +122,10 @@
 
         .shop-comments{
             border: thin solid #ef5661;
+        }
+
+        .comments p{
+            font-size: 18px;
         }
 
 
@@ -152,8 +169,8 @@
             })
             .then(data => {
                 console.log('Comment added:', data);
-                document.getElementById(`comment-${shopId}`).value = ''; 
-                fetchComments(shopId); 
+                document.getElementById(`comment-${shopId}`).value = ''; // Clear textarea after successful submission
+                fetchComments(shopId); // Refresh comments section to include the new comment
             })
             .catch(error => console.error('Error:', error));
         }
@@ -170,8 +187,8 @@
                 const commentsDiv = document.getElementById(`comments-${shopId}`);
                 commentsDiv.innerHTML = ''; // Clear previous comments
                 data.comments.forEach(comment => {
-                    const commentNode = document.createElement('p');
-                    commentNode.textContent = comment; /
+                    const commentNode = document.createElement('li');
+                    commentNode.textContent = comment; // Assuming the server sends back plain text comments
                     commentsDiv.appendChild(commentNode);
                 });
             })
@@ -203,13 +220,13 @@
                                 <p>Address: ${shop.vicinity}</p>
                                 <p>Rating: ${shop.rating}⭐</p>
                                 ${shop.photo_reference ? `<img src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${shop.photo_reference}&key=AIzaSyC4jaf9Xb9_yFj-wl_hLJjL3CxXhGN1WfY" alt="${shop.name}">` : ''}
-                                <textarea id="comment-${shop.id}" placeholder="Add a private comment..."></textarea>
-                                <button onclick="submitComment('${shop.id}')">Submit Comment</button>
-                                <div style="border: none" id="comments-${shop.id}"></div>
+                                <textarea style="font-size: 18px; width: 300px;" id="comment-${shop.id}" placeholder="Add a private comment..."></textarea>
+                                <button style="font-size: 18px; border: none;" onclick="submitComment('${shop.id}')">Submit</button>
+                                <div class="comments" style="border: none; font-size: 18px;" id="comments-${shop.id}"></div>
                             `;
                             resultsDiv.appendChild(shopDiv);
 
-                            fetchComments(shop.id); // fetch and display
+                            fetchComments(shop.id); // Function to fetch and display comments
                         });
                     })
 
