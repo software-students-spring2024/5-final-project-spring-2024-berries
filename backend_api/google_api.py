@@ -2,21 +2,10 @@ import os
 from flask import Flask, request, jsonify
 import requests
 from pymongo import MongoClient
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 
-
-try:
-    DB_USER = os.getenv("MONGODB_USER")
-    DB_PASSWORD = os.getenv("MONGO_PWD")
-    DB_HOST = os.getenv("DB_HOST")
-    URI = f"mongodb+srv://{DB_USER}:{DB_PASSWORD}@{DB_HOST}.5kr79yv.mongodb.net/"
-    client = MongoClient(URI)
-    db = client["coffeedb"]
-    cafesCollection = db["coffee"]
-    #print("Connected!")
-except Exception as e:
-    print(e)
 
 #api_key = os.environ.get("GOOGLE_API_KEY")
 
@@ -38,7 +27,7 @@ def find_cafes():
 
     # api key and parameters for google places
     #api_key = os.getenv('GOOGLE_API_KEY')
-    api_key = "AIzaSyC4jaf9Xb9_yFj-wl_hLJjL3CxXhGN1WfY"
+    api_key = os.getenv("API_KEY")
     radius = 400  # ADJUSTABLE
     types = "cafe"  # search only cafes
 

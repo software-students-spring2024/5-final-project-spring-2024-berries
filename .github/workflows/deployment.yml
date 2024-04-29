@@ -38,22 +38,22 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
     
-    # # Building Docker image and push to Docker Hub
-    # - name: Build and push Docker image
-    #   uses: docker/build-push-action@v2
-    #   with:
-    #     push: true
-    #     tags: bonnychavarria/webapp:latest
+    # Building Docker image and push to Docker Hub
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: bonnychavarria/webapp:latest
 
-    # # Deploy to Digital Ocean using SSH
-    # - name: Deploy to Digital Ocean
-    #   uses: appleboy/ssh-action@master
-    #   with:
-    #     host: ${{ secrets.DO_HOST }}
-    #     username: ${{ secrets.DO_USERNAME }}
-    #     key: ${{ secrets.DO_SSH_KEY }}
-    #     script: |
-    #       docker pull bonnychavarria/webapp:latest
-    #       docker stop web-app || true
-    #       docker rm web-app || true
-    #       docker run -d --name web-app --restart unless-stopped bonnychavarria/webapp:latest
+    # Deploy to Digital Ocean using SSH
+    - name: Deploy to Digital Ocean
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.DO_HOST }}
+        username: ${{ secrets.DO_USERNAME }}
+        key: ${{ secrets.DO_SSH_KEY }}
+        script: |
+          docker pull bonnychavarria/webapp:latest
+          docker stop web-app || true
+          docker rm web-app || true
+          docker run -d --name web-app --restart unless-stopped bonnychavarria/webapp:latest
