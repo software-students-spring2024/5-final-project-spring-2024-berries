@@ -4,8 +4,9 @@ import requests
 from pymongo import MongoClient
 from dotenv import load_dotenv
 
-app = Flask(__name__)
+load_dotenv()
 
+app = Flask(__name__)
 
 #api_key = os.environ.get("GOOGLE_API_KEY")
 
