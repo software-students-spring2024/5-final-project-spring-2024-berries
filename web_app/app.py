@@ -116,8 +116,15 @@ def home():
 
     return render_template("index.html")
 
+
 @app.route('/get_comments', methods=['GET'])
 def get_comments():
+    """
+    Gets the comments for the coffee shop with the specified ID.
+
+    Returns:
+        the comments as a JSON object.
+    """
     if 'username' not in session:
         return redirect(url_for('login'))
 
@@ -126,8 +133,15 @@ def get_comments():
     comments = [c for c in user.get('comments', []) if c['coffee_shop_id'] == coffee_shop_id]
     return jsonify({"comments": [c['comment'] for c in comments]})
 
+
 @app.route('/add_comment', methods=['POST'])
 def add_comment():
+    """
+    Adds a comment to the user's profile.
+
+    Returns:
+        JSON: A JSON object with the status of the comment addition.
+    """
     if 'username' not in session:
         return redirect(url_for('login'))
 
@@ -141,6 +155,7 @@ def add_comment():
         {'$push': {'comments': {'coffee_shop_id': coffee_shop_id, 'comment': comment}}}
     )
     return jsonify({"status": "success"})
+
 
 @app.route("/find_coffee_shops", methods=["POST"])
 def find_coffee_shops():

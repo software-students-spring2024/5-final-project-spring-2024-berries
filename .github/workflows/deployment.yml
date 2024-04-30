@@ -34,8 +34,8 @@ jobs:
       run: pylint web_app/app.py --ignore-patterns='.*\.pb2\.py,.*\.pb2_grpc\.py'
     - name: Run Black
       run: black web_app/
-    #- name: Run tests
-    #  run: pytest tests/web_app_tests.py
+    - name: Run tests
+      run: pytest tests/web_app_tests.py
 
     # Additional step to log into Docker Hub
     - name: Log in to Docker Hub
