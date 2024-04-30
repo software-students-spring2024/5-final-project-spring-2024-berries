@@ -51,6 +51,7 @@ pip install -r web_app/requirements.txt
 
 ## Container Images
 [web_app image](https://hub.docker.com/repository/docker/bonnychavarria/webapp/general)
+
 [backend_api image](https://hub.docker.com/repository/docker/bonnychavarria/backend_api/general)
 
 ## Contributors
