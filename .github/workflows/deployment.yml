@@ -50,6 +50,8 @@ jobs:
       with:
         push: true
         tags: bonnychavarria/webapp:latest
+        context: ./web_app
+        file: ./web_app/Dockerfile
 
     # Deploy to Digital Ocean using SSH
     - name: Deploy to Digital Ocean
