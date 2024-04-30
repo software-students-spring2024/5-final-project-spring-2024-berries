@@ -3,3 +3,4 @@ pymongo==4.6.3
 python-dotenv==1.0.1
 python_bcrypt==0.3.2
 Requests==2.31.0
+pytest-mock==3.14.0
