@@ -9,10 +9,13 @@ load_dotenv()
 
 app = Flask(__name__)
 
-app.secret_key = "323qssssa"
+app.secret_key = os.getenv("SECRET_KEY")
 
 try:
-    URI = "mongodb+srv://bcdy:BPoOlpuLgv3WKJ62@coffeeshops.5kr79yv.mongodb.net/"
+    DB_USER = os.getenv("MONGODB_USER")
+    DB_PASSWORD = os.getenv("MONGO_PWD")
+    DB_HOST = os.getenv("DB_HOST")
+    URI = f"mongodb+srv://{DB_USER}:{DB_PASSWORD}@{DB_HOST}.5kr79yv.mongodb.net/"
     client = MongoClient(URI)
     db = client["coffeedb"]
     user_collection = db["users"]
