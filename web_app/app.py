@@ -18,7 +18,7 @@ try:
     DB_PASSWORD = os.getenv("MONGO_PWD")
     DB_HOST = os.getenv("DB_HOST")
     #URI = f"mongodb+srv://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/"
-    URI = f"mongodb://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:27017/coffeedb"
+    URI = f"mongodb+srv://{DB_USER}:{DB_PASSWORD}@{DB_HOST}.5kr79yv.mongodb.net/?retryWrites=true&w=majority&appName=coffeeShops"
     client = MongoClient(URI)
     db = client["coffeedb"]
     user_collection = db["users"]
