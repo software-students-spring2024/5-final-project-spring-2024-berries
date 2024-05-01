@@ -7,22 +7,19 @@ services:
     ports:
       - "5001:5001"
     depends_on:
-      - mongodb
+      - backend_api
     environment:
       FLASK_APP: web_app/app.py
+    env_file:
+      - .env
 
-  machine_learning_client:
+  backend_api:
     build:
       context: ./backend_api
       dockerfile: ./Dockerfile
     ports:
       - "5002:5002"
-    depends_on:
-      - mongodb
     environment:
       FLASK_APP: backend_api/google_api.py
-
-  mongodb:
-    image: mongo
-    ports:
-      - "27017:27017"
+    env_file:
+      - .env

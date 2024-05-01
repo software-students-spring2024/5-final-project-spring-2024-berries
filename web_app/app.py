@@ -4,10 +4,12 @@ from pymongo import MongoClient
 import requests
 import bcrypt
 from dotenv import load_dotenv
+from flask_cors import CORS
 
 load_dotenv()
 
 app = Flask(__name__)
+CORS(app)
 
 app.secret_key = os.getenv("SECRET_KEY")
 
@@ -15,7 +17,7 @@ try:
     DB_USER = os.getenv("MONGODB_USER")
     DB_PASSWORD = os.getenv("MONGO_PWD")
     DB_HOST = os.getenv("DB_HOST")
-    URI = f"mongodb+srv://{DB_USER}:{DB_PASSWORD}@{DB_HOST}.5kr79yv.mongodb.net/"
+    URI = f"mongodb+srv://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/"
     client = MongoClient(URI)
     db = client["coffeedb"]
     user_collection = db["users"]
@@ -177,7 +179,8 @@ def find_coffee_shops():
     data = request.get_json()
     latitude = data.get("latitude")
     longitude = data.get("longitude")
-    api_url = "http://localhost:5002/find_cafes"  # URL to google_api.py service
+    #api_url = "http://localhost:5002/find_cafes"  # used when running locally
+    api_url = "http://backend_api:5002/find_cafes"  # URL to google_api.py service
     try:
         api_response = requests.post(api_url, json={"latitude": latitude, "longitude": longitude}, timeout=10)
         api_response.raise_for_status()

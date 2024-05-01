@@ -2,12 +2,12 @@ import os
 from flask import Flask, request, jsonify
 import requests
 from dotenv import load_dotenv
+from flask_cors import CORS
 
 load_dotenv()
 
 app = Flask(__name__)
-
-#api_key = os.environ.get("GOOGLE_API_KEY")
+CORS(app)
 
 
 @app.route("/find_cafes", methods=["POST"])
@@ -26,7 +26,6 @@ def find_cafes():
     longitude = data["longitude"]
 
     # api key and parameters for google places
-    #api_key = os.getenv('GOOGLE_API_KEY')
     api_key = os.getenv("API_KEY")
     radius = 400  # ADJUSTABLE
     types = "cafe"  # search only cafes
