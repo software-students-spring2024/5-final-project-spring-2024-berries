@@ -67,6 +67,6 @@ jobs:
           docker pull ${{ secrets.DOCKER_USERNAME }}/webapp:latest
           docker stop web-app || true
           docker rm web-app || true
-          docker run -d --name web-app -p 3000:3000 --restart unless-stopped  ${{ secrets.DOCKER_USERNAME }}/webapp:latest
+          docker run -d --name web-app -p 3000:3000 --restart unless-stopped ${{ secrets.DOCKER_USERNAME }}/webapp:latest
           sleep 10
           curl http://localhost:3000/healthcheck
