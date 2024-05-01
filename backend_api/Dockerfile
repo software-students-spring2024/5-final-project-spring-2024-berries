@@ -1,6 +1,6 @@
 FROM python:3.10
 
-WORKDIR /machine_learning_client
+WORKDIR /backend_api
 
 COPY requirements.txt ./
 
