@@ -62,6 +62,7 @@ jobs:
         host: ${{ secrets.DO_HOST }}
         username: ${{ secrets.DO_USERNAME }}
         key: ${{ secrets.DO_SSH_KEY }}
+        passphrase: ${{ secrets.SSH_PASSPHRASE }}
         script: |
           docker pull ${{ secrets.DOCKER_USERNAME }}/webapp:latest
           docker stop web-app || true
