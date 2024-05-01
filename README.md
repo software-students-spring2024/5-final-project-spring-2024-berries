@@ -2,9 +2,15 @@
 [![CI/CD for Web App](https://github.com/software-students-spring2024/5-final-project-spring-2024-berries/actions/workflows/deployment.yml/badge.svg)](https://github.com/software-students-spring2024/5-final-project-spring-2024-berries/actions/workflows/deployment.yml)
 [![log github events](https://github.com/software-students-spring2024/5-final-project-spring-2024-berries/actions/workflows/event-logger.yml/badge.svg)](https://github.com/software-students-spring2024/5-final-project-spring-2024-berries/actions/workflows/event-logger.yml)
 
-# Final Project
+# Final Project - Java Junction
 
-An exercise to put to practice software development teamwork, subsystem communication, containers, deployment, and CI/CD pipelines. See [instructions](./instructions.md) for details.
+## Overview 
+
+The Java Junction web application utilizes the user's computer GPS to display cafes close in their area. Users will need to register and log into their account to start the application. After their session is connected and nearby cafes are displayed, users can leave a comment as a note under any cafe they choose. These comments will show up any time the user connects to the web application in the respective area. The user accounts and their respective comments are saved within a database.
+
+## Features
+* Cafe Locations: Displays cafes relative in location to user's computer GPS
+* Comments: Designed to allow users to save comments that reflect their experiences with that cafe
 
 ## How to Run
 
