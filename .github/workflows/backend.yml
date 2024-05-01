@@ -1,4 +1,4 @@
-name: CI for Backend
+name: CI/CD for Backend
 
 on:
   push:
@@ -51,6 +51,6 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/webapp:latest
+        tags: ${{ secrets.DOCKER_USERNAME }}/backend-api:latest
         context: ./backend_api
         file: ./backend_api/Dockerfile
