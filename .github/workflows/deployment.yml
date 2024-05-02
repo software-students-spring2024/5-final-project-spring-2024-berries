@@ -53,20 +53,10 @@ jobs:
         tags: ${{ secrets.DOCKER_USERNAME }}/webapp:latest
         context: ./web_app
         file: ./web_app/Dockerfile
- 
 
-    # Deploy to Digital Ocean using SSH
-    - name: Deploy to Digital Ocean
-      uses: appleboy/ssh-action@v1.0.3
+    - name: Initialize Digital Ocean CLI
+      uses: digitalocean/action-doctl@v2
       with:
-        host: ${{ secrets.DO_HOST }}
-        username: ${{ secrets.DO_USERNAME }}
-        key: ${{ secrets.DO_SSH_KEY }}
-        passphrase: ${{ secrets.SSH_PASSPHRASE }}
-        script: |
-          docker pull ${{ secrets.DOCKER_USERNAME }}/webapp:latest
-          docker stop web-app || true
-          docker rm web-app || true
-          docker run -d --name web-app -p 3000:3000 --restart unless-stopped ${{ secrets.DOCKER_USERNAME }}/webapp:latest
-          sleep 10
-     #      curl http://localhost:3000/healthcheck
+        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+    - name: Update Digital Ocean App
+      run: doctl apps update ${{ secrets.APP_ID }} --spec .do/app.yaml
