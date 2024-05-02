@@ -59,7 +59,7 @@ jobs:
       with:
         host: ${{ secrets.DO_HOST }}
         username: ${{ secrets.DO_USERNAME }}
-        key: ${{ secrets.DO_SSH_KEY }}
+        password: ${{ secrets.DO_PWD }}
         script: |
           cd 5-final-project-spring-2024-berries
           docker-compose down
