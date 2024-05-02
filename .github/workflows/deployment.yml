@@ -54,9 +54,14 @@ jobs:
         context: ./web_app
         file: ./web_app/Dockerfile
 
-    - name: Initialize Digital Ocean CLI
-      uses: digitalocean/action-doctl@v2
+    - name: Deploy to Digital Ocean
+      uses: appleboy/ssh-action@v1.0.3
       with:
-        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-    - name: Update Digital Ocean App
-      run: doctl apps update ${{ secrets.APP_ID }} --spec .do/app.yaml
+        host: ${{ secrets.DO_HOST }}
+        username: ${{ secrets.DO_USERNAME }}
+        key: ${{ secrets.DO_SSH_KEY }}
+        script: |
+          cd 5-final-project-spring-2024-berries
+          docker-compose down
+          docker-compose pull
+          docker-compose up -d
