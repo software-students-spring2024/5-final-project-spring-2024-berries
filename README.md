@@ -45,7 +45,7 @@ docker-compose up --build
 
 ## Container Images
 - [web_app image](https://hub.docker.com/repository/docker/bonnychavarria/webapp/general)
-- [backend_api image](https://hub.docker.com/repository/docker/bonnychavarria/backend_api/general)
+- [backend_api image](https://hub.docker.com/repository/docker/bonnychavarria/webapp/general)
 
 ## Website
 The website is deployed here: [Java Junction](http://45.55.200.164:5001)
