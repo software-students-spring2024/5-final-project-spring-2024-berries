@@ -70,6 +70,11 @@ jobs:
         username: ${{ secrets.DO_USERNAME }}
         password: ${{ secrets.DO_PWD }}
         script: |
+          echo "MONGODB_USER=${{ secrets.MONGODB_USER }}" >> 5-final-project-spring-2024-berries/.env
+          echo "MONGO_PWD=${{ secrets.MONGO_PWD }}" >> 5-final-project-spring-2024-berries/.env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> 5-final-project-spring-2024-berries/.env
+          echo "API_KEY=${{ secrets.API_KEY }}" >> 5-final-project-spring-2024-berries/.env
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> 5-final-project-spring-2024-berries/.env
           docker pull ${{ secrets.DOCKER_USERNAME }}/webapp:latest
           docker pull ${{ secrets.DOCKER_USERNAME }}/backend-api:latest
           cd 5-final-project-spring-2024-berries
