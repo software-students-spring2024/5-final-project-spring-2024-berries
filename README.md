@@ -49,6 +49,7 @@ docker-compose up --build
 
 ## Website
 The website is deployed here: [Java Junction](http://45.55.200.164:5001)
+
 Ensure the location setting is not blocked on your device!
 
 ## Contributors
