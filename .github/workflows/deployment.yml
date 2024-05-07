@@ -54,14 +54,24 @@ jobs:
         context: ./web_app
         file: ./web_app/Dockerfile
 
+    # Building Docker image for backend api and push to Docker Hub
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: ${{ secrets.DOCKER_USERNAME }}/backend-api:latest
+        context: ./backend_api
+        file: ./backend_api/Dockerfile
+
     - name: Deploy to Digital Ocean
-      uses: appleboy/ssh-action@v1.0.3
+      uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.DO_HOST }}
         username: ${{ secrets.DO_USERNAME }}
         password: ${{ secrets.DO_PWD }}
         script: |
-          cd 5-final-project-spring-2024-berries
+          docker pull ${{ secrets.DOCKER_USERNAME }}/webapp:latest
+          docker pull ${{ secrets.DOCKER_USERNAME }}/backend-api:latest
           docker-compose down
           docker-compose pull
           docker-compose up -d
