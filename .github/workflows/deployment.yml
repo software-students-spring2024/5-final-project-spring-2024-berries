@@ -72,6 +72,7 @@ jobs:
         script: |
           docker pull ${{ secrets.DOCKER_USERNAME }}/webapp:latest
           docker pull ${{ secrets.DOCKER_USERNAME }}/backend-api:latest
+          cd 5-final-project-spring-2024-berries
           docker-compose down
           docker-compose pull
           docker-compose up -d
