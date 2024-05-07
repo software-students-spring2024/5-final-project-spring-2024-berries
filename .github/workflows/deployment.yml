@@ -79,5 +79,7 @@ jobs:
           docker pull ${{ secrets.DOCKER_USERNAME }}/backend-api:latest
           cd 5-final-project-spring-2024-berries
           docker-compose down
+          docker-compose rm -f
           docker-compose pull
+          docker network prune -f
           docker-compose up -d
