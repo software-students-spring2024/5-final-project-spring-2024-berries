@@ -47,6 +47,10 @@ docker-compose up --build
 - [web_app image](https://hub.docker.com/repository/docker/bonnychavarria/webapp/general)
 - [backend_api image](https://hub.docker.com/repository/docker/bonnychavarria/backend_api/general)
 
+## Website
+The website is deployed here: [Java Junction](http://45.55.200.164:5001)
+Ensure the location setting is not blocked on your device!
+
 ## Contributors
 * [Bonny](https://github.com/BonnyCChavarria) 
 * [Christina](https://github.com/crb623)
